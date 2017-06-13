@@ -32,7 +32,7 @@ $mongoDbDbFolderLocation=$mongoDbDataFolderLocation + "\db"
 $mongoDBServiceName="MongoDB"
 $secondsToWaitForServiceToStartUp=10
 
-$cfgLocation = "C:\mongodb\mongo.cfg"
+$cfgLocation = "$mongoDbFolderLocation\mongo.cfg"
 $conf = "systemLog:
     destination: file
     path: c:\mongodb\data\log\mongod.log
@@ -187,7 +187,7 @@ if ( -Not (Test-Path $cfgLocation ))
 else { Write-Host "Mongodb configuration file already exists, good" -ForegroundColor Green }
 
 # Create log file
-$logFileLocation = "C:\mongodb\data\log\mongod.log"
+$logFileLocation = "$mongoDbFolderLocation\data\log\mongod.log"
 Write-Host "Creating mongodb log file at" $logFileLocation -ForegroundColor Cyan
 if ( -Not (Test-Path $logFileLocation ))
 {

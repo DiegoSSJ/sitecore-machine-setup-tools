@@ -22,7 +22,7 @@ param(
     [string]$mongoDbFolderLocation="C:\mongodb",
     [string]$mongoDbMsiLocation=".\mongodb-win32-x86_64-2008plus-ssl-3.4.3-signed.msi")
 
-$appToMatch="*mongo*"
+$appToMatch="*mongodb*"
 #$mongoDbMsiLocation=".\mongodb-win32-x86_64-2008plus-ssl-3.4.3-signed.msi"
 #$mongoDbFolderLocation="C:\mongodb" #installation folder can't contain spaces even with quoting?
 $mongoDbDataFolderLocation=$mongoDbFolderLocation + "\data"
@@ -96,6 +96,11 @@ if ($result -eq $null) {
     Write-Host "Installing MongoDB msi"
 
     # Msi exec needs absolute path to msi
+    if ( ! ( Test-Path $mongoDbMsiLocation ) )
+    {
+        Write-Error "Msi installation file not found at $mongoDbMsiLocation, did you download it? You need to download yourself since MongoDB requires user input to download"
+        exit 1
+    }
     $msi = Get-Item $mongoDbMsiLocation
     $msiPath = $msi.FullName
     $mongoDbMsiInstallArgs = " /qn /i  $msiPath INSTALLLOCATION=$mongoDbFolderLocation ADDLOCAL=all" #installation folder can't contain spaces even with quoting?
@@ -112,6 +117,15 @@ if ($result -eq $null) {
     }
 
     Write-Host "Installed MongoDB msi correctly" -ForegroundColor Green
+}
+else 
+{
+    $reply = Read-Host "MongoDB already installed as an application, do you want to continue configuring it at $mongoDbFolderLocation (Y/N)"
+    if ( $reply.ToUpper() -ne "Y")
+    {
+        Write-Host "Okay, skipping then"
+        exit 0
+    }
 }
 
 

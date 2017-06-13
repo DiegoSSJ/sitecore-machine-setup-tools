@@ -20,7 +20,8 @@
 
 param(    
     [string]$mongoDbFolderLocation="C:\mongodb",
-    [string]$mongoDbMsiLocation=".\mongodb-win32-x86_64-2008plus-ssl-3.4.3-signed.msi")
+    [Parameter(Mandatory=$true)]
+    [string]$mongoDbMsiLocation)
 
 $appToMatch="*mongodb*"
 #$mongoDbMsiLocation=".\mongodb-win32-x86_64-2008plus-ssl-3.4.3-signed.msi"

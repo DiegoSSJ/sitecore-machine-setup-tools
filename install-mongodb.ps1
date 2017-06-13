@@ -35,9 +35,9 @@ $secondsToWaitForServiceToStartUp=10
 $cfgLocation = "$mongoDbFolderLocation\mongo.cfg"
 $conf = "systemLog:
     destination: file
-    path: c:\mongodb\data\log\mongod.log
+    path: $mongoDbFolderLocation\data\log\mongod.log
 storage:
-    dbPath: c:\mongodb\data\db"
+    dbPath: $mongoDbFolderLocation\data\db"
 
 function Get-InstalledApps
 {
@@ -196,13 +196,15 @@ if ( -Not (Test-Path $logFileLocation ))
 }
 else { Write-Host "Mongodb log file already exists, good" -ForegroundColor Green }
 
-
+Start-Sleep -Seconds 2
 
 # Set up as a service
 Write-Host "Setting up MongoDb as a service" -ForegroundColor Cyan
 $mongodExec=$mongoDbFolderLocation+"\bin\mongod.exe"
 $setupServiceArgs= " --config " + $cfgLocation + " --install " 
 $res = Start-Process $mongodExec -ArgumentList $setupServiceArgs -Wait -NoNewWindow -PassThru
+
+Start-Sleep -Seconds 2
 
 # Check service exists
 Write-Host "Checking if Mongodb service was created correctly" -ForegroundColor Cyan

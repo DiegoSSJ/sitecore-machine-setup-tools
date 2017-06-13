@@ -61,6 +61,12 @@ function Test-Administrator
 }
 
 
+if ( $mongoDbFolderLocation.Contains(" ") )
+{
+    Write-Error "MongoDB folder location parameter contains spaces. It can't contain spaces because the MSI installation would fail in that case. Please use a path withouth spaces"
+}
+
+
 # Dummy check if mogodb service already installed
 Write-Host "Checking if Mongodb is already installed (service)" -ForegroundColor Cyan
 $isMongoDbServiceInstalled = Get-Service | Where-Object {$_.Name -like "*mongo*"}
